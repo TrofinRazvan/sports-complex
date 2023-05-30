@@ -1,30 +1,50 @@
 package com.springboot.sportscomplex.controllers;
 
 import com.springboot.sportscomplex.models.dto.UserDTO;
-import com.springboot.sportscomplex.services.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import com.springboot.sportscomplex.models.entities.UserEntity;
+import com.springboot.sportscomplex.services.user.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     public final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public UserDTO createUser(@RequestBody UserDTO userDTO) {
+    @PostMapping
+    public ResponseEntity<UserEntity> createUser(@RequestBody @Valid UserDTO userDTO) {
         return userService.createUser(userDTO);
     }
+}
 
-    @GetMapping("/users")
-    public UserDTO getUsers() {
-        return null;
-    }
+
+
+
+
+
+
+
+
+//    @PostMapping("/users")
+//    public UserDTO createUser(@RequestBody UserDTO userDTO) {
+//        return userService.createUser(userDTO);
+//    }
+
+//    @GetMapping("/users")
+//    public List<UserDTO> getUsers() {
+//        return userService.getUsers();
+//    }
+//    @DeleteMapping("/users/{name}")
+//    public UserDTO deleteUserById(@PathVariable Long id) {
+//        userService.deleteUserById(id);
+//        return UserDTO;
+//    }
 }
