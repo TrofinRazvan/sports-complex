@@ -5,7 +5,7 @@ import com.springboot.sportscomplex.exceptions.PhoneNumberTakenException;
 import com.springboot.sportscomplex.models.dto.UserDTO;
 import com.springboot.sportscomplex.models.entities.UserEntity;
 import com.springboot.sportscomplex.repositories.UserRepository;
-import com.springboot.sportscomplex.services.sms.SmsValidationService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,45 +17,29 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final SmsValidationService smsValidationService;
+    private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(SmsValidationService smsValidationService,
+    public UserServiceImpl(ObjectMapper objectMapper,
                            UserRepository userRepository) {
+        this.objectMapper = objectMapper;
         this.userRepository = userRepository;
-        this.smsValidationService = smsValidationService;
     }
 
+    @Transactional
     @Override
     public ResponseEntity<UserEntity> createUser(UserDTO userDTO) {
-
-        // Step one: Verific daca user-ul exista in baza de date
+        // 1. Verific daca user-ul exista in baza de date
         Optional<UserEntity> userEntityOptional = userRepository.findByPhoneNumber(userDTO.getPhoneNumber());
-
-        // Step 2.a: Daca exista trebuie sa arunce o exceptie
+        // 2. Daca exista trebuie sa arunce o exceptie
         if (userEntityOptional.isPresent()) {
-            throw new PhoneNumberTakenException("Phone number: " + userDTO.getPhoneNumber() + " already exist.");
+            throw new PhoneNumberTakenException("Phone number: " + userDTO.getPhoneNumber() + " already exists.");
         }
-        // Step 2.b: Daca nu exista se salveaza in baza de date
-        UserEntity saveUser = userRepository.save(userEntityOptional.get());
-        return ResponseEntity.ok(saveUser);
+        // 3. Daca nu se face maparea (din UserDTO in UserEntity)
+        UserEntity userEntity = objectMapper.convertValue(userDTO, UserEntity.class);
+        // 4. Se salveaza in baza de date
+        UserEntity savedUser = userRepository.save(userEntity);
+        return ResponseEntity.ok(savedUser);
     }
-
-//        smsValidationService.smsValidation(userDTO.getSms());
-//        UserEntity userEntity = objectMapper.convertValue(userDTO, UserEntity.class);
-//        UserEntity savedUser = userRepository.save(userEntity);
-//        log.info("User " + savedUser.getSms());
-//        return objectMapper.convertValue(savedUser, UserDTO.class);
-    }
-
-
-    //    @Override
-//    public UserDTO deleteUserById(String name) {
-//        for(UserDTO user : userDTOList) {
-//            if(user.getFullName().equalsIgnoreCase(name)) {
-//                userDTOList.remove();
-//            }
-//        }
-//        return null;
-//    }
+}
