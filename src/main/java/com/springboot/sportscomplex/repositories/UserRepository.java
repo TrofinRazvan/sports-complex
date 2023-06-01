@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-    @Query("SELECT u FROM UserEntity u WHERE u.phone_number = ?1")
+    @Query("SELECT u FROM UserEntity u WHERE u.phoneNumber = ?1")
     Optional<UserEntity> findByPhoneNumber(String phoneNumber);
 }
