@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserEntity> createUser(UserDTO userDTO) {
         // 1. Verific daca user-ul exista in baza de date
-        Optional<UserEntity> userEntityOptional = userRepository.findByPhoneNumber(userDTO.getPhoneNumber());
+        Optional<UserDTO> userEntityOptional = userRepository.findByPhoneNumber(userDTO.getPhoneNumber());
         // 2. Daca exista trebuie sa arunce o exceptie
         if (userEntityOptional.isPresent()) {
             throw new PhoneNumberTakenException("Phone number: " + userDTO.getPhoneNumber() + " already exists.");
