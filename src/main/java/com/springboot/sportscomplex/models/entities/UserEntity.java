@@ -1,8 +1,14 @@
 package com.springboot.sportscomplex.models.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
@@ -19,6 +25,4 @@ public class UserEntity {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
-//    @Column(name = "sms")
-//    private String sms;
 }

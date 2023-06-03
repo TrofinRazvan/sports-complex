@@ -4,11 +4,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@Builder
 public class UserDTO implements Serializable {
 
     @Id
@@ -22,6 +24,4 @@ public class UserDTO implements Serializable {
     private String email;
     @NotNull
     private String phoneNumber;
-//    @NotBlank
-//    private String sms;
 }

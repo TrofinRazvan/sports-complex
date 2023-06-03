@@ -7,6 +7,4 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
 
     ResponseEntity<UserEntity> createUser(UserDTO userDTO);
-
-
 }
