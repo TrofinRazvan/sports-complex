@@ -23,7 +23,7 @@ public class SubscriptionController {
     public ResponseEntity<SubscriptionDTO> addSubscription(@RequestBody @Valid SubscriptionDTO subscriptionDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionService.addsubscription(subscriptionDTO));
     }
-    @PutMapping("/subscription/{id}")
+    @PutMapping("/subscriptions/{id}")
     public ResponseEntity<SubscriptionDTO> updateSubscriptionById(@PathVariable Long id, @RequestBody @Valid SubscriptionDTO subscriptionDTO) {
         return ResponseEntity.ok(subscriptionService.updateSubscriptionById(id, subscriptionDTO));
     }

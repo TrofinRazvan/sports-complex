@@ -11,40 +11,41 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class UserServiceTest {
+public class PhoneNumberTest {
 
     @InjectMocks
     private UserServiceImpl userService;
-
     @Mock
     private ObjectMapper objectMapper;
     @Mock
     private UserRepository userRepository;
 
     @Test
-    void testCreateUsersShouldPass() {
-        // Given
+    void testFindByPhoneNumber() {
+        //Given
+        String phoneNumber = "0755412563";
         UserDTO userDTO = UserDTO.builder()
-                .firstName("Alexandrescu")
-                .lastName("Robert")
-                .email("alex.robert@yahoo.com")
-                .phoneNumber("0756215485")
+                .firstName("Georgescu")
+                .lastName("Ionel")
+                .email("geo.ion@yahoo.com")
+                .phoneNumber(phoneNumber)
                 .build();
         UserEntity userEntity = UserEntity.builder()
-                .firstName("Alexandrescu")
-                .lastName("Robert")
-                .email("alex.robert@yahoo.com")
-                .phoneNumber("0756215485")
+                .firstName("Georgescu")
+                .lastName("Ionel")
+                .email("geo.ion@yahoo.com")
+                .phoneNumber(phoneNumber)
                 .build();
-        when(objectMapper.convertValue(userDTO, UserEntity.class)).thenReturn(userEntity);
-        when(userRepository.save(userEntity)).thenReturn(userEntity);
+        when(userRepository.findByPhoneNumber(phoneNumber)).thenReturn(Optional.of(userEntity));
         when(objectMapper.convertValue(userEntity, UserDTO.class)).thenReturn(userDTO);
         // When
-        UserDTO resultUserDTO = userService.createUser(userDTO);
-        // Then
+        UserDTO resultUserDTO = userService.findByPhoneNumber(phoneNumber);
+        //Then
         Assertions.assertEquals(userDTO, resultUserDTO);
     }
 }

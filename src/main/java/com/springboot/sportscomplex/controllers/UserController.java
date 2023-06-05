@@ -1,7 +1,6 @@
 package com.springboot.sportscomplex.controllers;
 
 import com.springboot.sportscomplex.models.dto.UserDTO;
-import com.springboot.sportscomplex.models.entities.UserEntity;
 import com.springboot.sportscomplex.services.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody @Valid UserDTO userDTO) {
-        return userService.createUser(userDTO);
+    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
+        return ResponseEntity.ok(userService.createUser(userDTO));
     }
-
-
 }
 
 

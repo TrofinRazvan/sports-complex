@@ -8,10 +8,10 @@ import java.io.Serializable;
 @Data
 public class SubscriptionDTO implements Serializable {
 
-    @NotBlank
-    private String priceGymSubscription;
-    @NotBlank
-    private String priceSwimmingPoolSubscription;
-    @NotBlank
-    private String priceSaunaSubscription;
+//    @NotBlank
+    private int priceGymSubscription;
+//    @NotBlank
+    private int priceSwimmingPoolSubscription;
+//    @NotBlank
+    private int priceSaunaSubscription;
 }
