@@ -12,9 +12,9 @@ public class SubscriptionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "price_gym_membership")
-    private String priceGymSubscription;
+    private int priceGymSubscription;
     @Column(name = "price_swimming_pool_subscription")
-    private String priceSwimmingPoolSubscription;
+    private int priceSwimmingPoolSubscription;
     @Column(name = "price_sauna_subscription")
-    private String priceSaunaSubscription;
+    private int priceSaunaSubscription;
 }

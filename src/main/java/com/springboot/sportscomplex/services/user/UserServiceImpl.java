@@ -8,7 +8,6 @@ import com.springboot.sportscomplex.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,9 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public ResponseEntity<UserEntity> createUser(UserDTO userDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
         // 1. Verific daca user-ul exista in baza de date
-        Optional<UserDTO> userEntityOptional = userRepository.findByPhoneNumber(userDTO.getPhoneNumber());
+        Optional<UserEntity> userEntityOptional = userRepository.findByPhoneNumber(userDTO.getPhoneNumber());
         // 2. Daca exista trebuie sa arunce o exceptie
         if (userEntityOptional.isPresent()) {
             throw new PhoneNumberTakenException("Phone number: " + userDTO.getPhoneNumber() + " already exists.");
@@ -40,6 +39,20 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = objectMapper.convertValue(userDTO, UserEntity.class);
         // 4. Se salveaza in baza de date
         UserEntity savedUser = userRepository.save(userEntity);
-        return ResponseEntity.ok(savedUser);
+        log.info("User " + savedUser.getFirstName() + " " + savedUser.getLastName() + " was created" + " with the number " + savedUser.getPhoneNumber() + ".");
+        return objectMapper.convertValue(savedUser, UserDTO.class);
+    }
+
+    @Transactional
+    @Override
+    public UserDTO findByPhoneNumber(String phoneNumber) {
+        Optional<UserEntity> userEntityOptional = userRepository.findByPhoneNumber(phoneNumber);
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            log.info("User found with the phone number: " + phoneNumber);
+            return objectMapper.convertValue(userEntity, UserDTO.class);
+        }
+        log.info("No user found with the phone number: " + phoneNumber);
+        return null;
     }
 }
