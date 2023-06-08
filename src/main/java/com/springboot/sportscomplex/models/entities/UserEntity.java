@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -27,6 +28,18 @@ public class UserEntity {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "city")
+    private String city;
+    @Column(name = "emergency_contact_name")
+    private String emergencyContactName;
+    @Column(name = "emergency_contact_phone_number")
+    private String emergencyContactPhoneNumber;
     @ManyToMany
     @JoinTable(
             name = "user_subscription",
