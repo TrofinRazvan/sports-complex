@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class SubscriptionController {
 
@@ -17,12 +19,29 @@ public class SubscriptionController {
     public SubscriptionController(SubscriptionService subscriptionService) {
         this.subscriptionService = subscriptionService;
     }
+
+
     @PostMapping("/subscriptions")
-    public ResponseEntity<SubscriptionDTO> addSubscription(@RequestBody @Valid SubscriptionDTO subscriptionDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionService.addSubscription(subscriptionDTO));
+    public ResponseEntity<SubscriptionDTO> createSubscription(@RequestBody @Valid SubscriptionDTO subscriptionDTO) {
+        SubscriptionDTO createdSubscription = subscriptionService.createSubscription(subscriptionDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSubscription);
     }
-    @PutMapping("/subscriptions/{phoneNumber}")
-    public ResponseEntity<SubscriptionDTO> updateSubscriptionByPhoneNumber(@PathVariable String phoneNumber, @RequestBody @Valid SubscriptionDTO subscriptionDTO) {
-        return ResponseEntity.ok(subscriptionService.updateSubscriptionByPhoneNumber(phoneNumber, subscriptionDTO));
+
+    @GetMapping("/subscriptions")
+    public ResponseEntity<List<SubscriptionDTO>> getAllSubscriptions() {
+        List<SubscriptionDTO> subscriptions = subscriptionService.getAllSubscriptions();
+        return ResponseEntity.ok(subscriptions);
+    }
+
+    @DeleteMapping("/subscriptions/{subscriptionId}")
+    public ResponseEntity<Void> deleteSubscriptionById(@PathVariable long subscriptionId) {
+        subscriptionService.deleteSubscriptionById(subscriptionId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/subscriptions/{subscriptionId}")
+    public ResponseEntity<SubscriptionDTO> updateSubscriptionById(@PathVariable long subscriptionId, @RequestBody @Valid SubscriptionDTO subscriptionDTO) {
+        SubscriptionDTO updatedSubscription = subscriptionService.updateSubscriptionById(subscriptionId, subscriptionDTO);
+        return ResponseEntity.ok(updatedSubscription);
     }
 }

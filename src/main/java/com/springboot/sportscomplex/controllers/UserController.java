@@ -29,6 +29,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
+
     @GetMapping("/users/{phoneNumber}")
     public ResponseEntity<UserDTO> getUserByPhoneNumber(@PathVariable String phoneNumber) {
         UserDTO userDTO = userService.findByPhoneNumber(phoneNumber);
