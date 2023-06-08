@@ -1,8 +1,6 @@
 package com.springboot.sportscomplex.controllers;
 
 import com.springboot.sportscomplex.models.dto.SubscriptionDTO;
-import com.springboot.sportscomplex.models.entities.SubscriptionEntity;
-import com.springboot.sportscomplex.models.entities.UserEntity;
 import com.springboot.sportscomplex.services.subscription.SubscriptionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +19,10 @@ public class SubscriptionController {
     }
     @PostMapping("/subscriptions")
     public ResponseEntity<SubscriptionDTO> addSubscription(@RequestBody @Valid SubscriptionDTO subscriptionDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionService.addsubscription(subscriptionDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionService.addSubscription(subscriptionDTO));
     }
-    @PutMapping("/subscriptions/{id}")
-    public ResponseEntity<SubscriptionDTO> updateSubscriptionById(@PathVariable Long id, @RequestBody @Valid SubscriptionDTO subscriptionDTO) {
-        return ResponseEntity.ok(subscriptionService.updateSubscriptionById(id, subscriptionDTO));
+    @PutMapping("/subscriptions/{phoneNumber}")
+    public ResponseEntity<SubscriptionDTO> updateSubscriptionByPhoneNumber(@PathVariable String phoneNumber, @RequestBody @Valid SubscriptionDTO subscriptionDTO) {
+        return ResponseEntity.ok(subscriptionService.updateSubscriptionByPhoneNumber(phoneNumber, subscriptionDTO));
     }
 }

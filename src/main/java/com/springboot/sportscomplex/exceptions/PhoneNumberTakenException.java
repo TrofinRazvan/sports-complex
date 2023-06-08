@@ -4,7 +4,7 @@ import org.springframework.dao.DuplicateKeyException;
 
 public class PhoneNumberTakenException extends DuplicateKeyException {
 
-    public PhoneNumberTakenException(String phone) {
-        super(phone);
+    public PhoneNumberTakenException(String message) {
+        super(message);
     }
 }

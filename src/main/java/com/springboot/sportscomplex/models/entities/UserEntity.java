@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +27,11 @@ public class UserEntity {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @ManyToMany
+    @JoinTable(
+            name = "user_subscription",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscription_id")
+    )
+    private List<SubscriptionEntity> subscriptions;
 }
