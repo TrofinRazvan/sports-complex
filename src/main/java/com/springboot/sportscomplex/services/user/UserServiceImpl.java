@@ -2,14 +2,16 @@ package com.springboot.sportscomplex.services.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.sportscomplex.exceptions.PhoneNumberTakenException;
+import com.springboot.sportscomplex.exceptions.UserNotFoundException;
 import com.springboot.sportscomplex.models.dto.UserDTO;
 import com.springboot.sportscomplex.models.entities.UserEntity;
 import com.springboot.sportscomplex.repositories.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -26,24 +28,26 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        // 1. Verific daca user-ul exista in baza de date
         Optional<UserEntity> userEntityOptional = userRepository.findByPhoneNumber(userDTO.getPhoneNumber());
-        // 2. Daca exista trebuie sa arunce o exceptie
         if (userEntityOptional.isPresent()) {
             throw new PhoneNumberTakenException("Phone number: " + userDTO.getPhoneNumber() + " already exists.");
         }
-        // 3. Daca nu se face maparea (din UserDTO in UserEntity)
         UserEntity userEntity = objectMapper.convertValue(userDTO, UserEntity.class);
-        // 4. Se salveaza in baza de date
         UserEntity savedUser = userRepository.save(userEntity);
         log.info("User " + savedUser.getFirstName() + " " + savedUser.getLastName() + " was created" + " with the number " + savedUser.getPhoneNumber() + ".");
         return objectMapper.convertValue(savedUser, UserDTO.class);
     }
 
-    @Transactional
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<UserEntity> usersFound = userRepository.findAll();
+        List<UserDTO> usersFoundDTO = new ArrayList<>();
+        usersFound.forEach(userEntity -> usersFoundDTO.add(objectMapper.convertValue(userEntity, UserDTO.class)));
+        return usersFoundDTO;
+    }
+
     @Override
     public UserDTO findByPhoneNumber(String phoneNumber) {
         Optional<UserEntity> userEntityOptional = userRepository.findByPhoneNumber(phoneNumber);
@@ -54,5 +58,28 @@ public class UserServiceImpl implements UserService {
         }
         log.info("No user found with the phone number: " + phoneNumber);
         return null;
+    }
+
+    @Override
+    public void deleteUserById(long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            log.info("User with id " + id + " was successfully deleted.");
+        } else {
+            throw new UserNotFoundException("User not found.");
+        }
+    }
+
+    @Override
+    public UserDTO updateUserById(long id, UserDTO userDTO) {
+        UserEntity userFound = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + "does not exist."));
+        userFound.setFirstName(userDTO.getFirstName());
+        userFound.setLastName(userDTO.getLastName());
+        userFound.setEmail(userDTO.getEmail());
+        userFound.setPhoneNumber(userDTO.getPhoneNumber());
+        UserEntity customerSaved = userRepository.save(userFound);
+        log.info("Customer with id " + id + " was successfully updated");
+        return objectMapper.convertValue(customerSaved, UserDTO.class);
     }
 }
