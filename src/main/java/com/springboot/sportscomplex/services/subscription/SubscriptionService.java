@@ -7,6 +7,8 @@ import java.util.List;
 public interface SubscriptionService {
 
     SubscriptionDTO createSubscription(SubscriptionDTO subscriptionDTO);
+    void addSubscriptionToUser(Long userId, Long subscriptionId);
+//    void addSubscriptionToUserUsingPhoneNumber(String phoneNumber, Long subscriptionId);
 
     List<SubscriptionDTO> getAllSubscriptions();
 

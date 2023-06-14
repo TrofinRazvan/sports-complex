@@ -2,7 +2,7 @@ package com.springboot.sportscomplex.unitTesting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.sportscomplex.models.dto.UserDTO;
-import com.springboot.sportscomplex.models.entities.UserEntity;
+import com.springboot.sportscomplex.models.entities.User;
 import com.springboot.sportscomplex.repositories.UserRepository;
 import com.springboot.sportscomplex.services.user.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -35,16 +35,16 @@ public class PhoneNumberTest {
                 .email("geo.ion@yahoo.com")
                 .phoneNumber(phoneNumber)
                 .build();
-        UserEntity userEntity = UserEntity.builder()
+        User user = User.builder()
                 .firstName("Georgescu")
                 .lastName("Ionel")
                 .email("geo.ion@yahoo.com")
                 .phoneNumber(phoneNumber)
                 .build();
-        when(userRepository.findByPhoneNumber(phoneNumber)).thenReturn(Optional.of(userEntity));
-        when(objectMapper.convertValue(userEntity, UserDTO.class)).thenReturn(userDTO);
+        when(userRepository.findUserByPhoneNumber(phoneNumber)).thenReturn(Optional.of(user));
+        when(objectMapper.convertValue(user, UserDTO.class)).thenReturn(userDTO);
         // When
-        UserDTO resultUserDTO = userService.findByPhoneNumber(phoneNumber);
+        UserDTO resultUserDTO = userService.findUserByPhoneNumber(phoneNumber);
         //Then
         Assertions.assertEquals(userDTO, resultUserDTO);
     }

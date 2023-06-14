@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +40,11 @@ public class UserEntity {
     private String emergencyContactName;
     @Column(name = "emergency_contact_phone_number")
     private String emergencyContactPhoneNumber;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "user_subscription",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "subscription_id")
+            name = "users_subscriptions",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscriptions_id")
     )
-    private List<SubscriptionEntity> subscriptions;
+    private List<Subscription> subscriptions;
 }

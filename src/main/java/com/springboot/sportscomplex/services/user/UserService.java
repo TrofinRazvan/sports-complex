@@ -10,7 +10,8 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
-    UserDTO findByPhoneNumber(String phoneNumber);
+    UserDTO findUserByPhoneNumber(String phoneNumber);
+    long getUserCount();
 
     void deleteUserById(long id);
 

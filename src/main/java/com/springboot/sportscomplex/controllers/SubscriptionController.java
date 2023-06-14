@@ -20,12 +20,23 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
-
     @PostMapping("/subscriptions")
     public ResponseEntity<SubscriptionDTO> createSubscription(@RequestBody @Valid SubscriptionDTO subscriptionDTO) {
         SubscriptionDTO createdSubscription = subscriptionService.createSubscription(subscriptionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubscription);
     }
+
+    @PostMapping("/{userId}/subscriptions/{subscriptionId}")
+    public ResponseEntity<String> addSubscriptionToUser(@PathVariable Long userId, @PathVariable Long subscriptionId) {
+        subscriptionService.addSubscriptionToUser(userId, subscriptionId);
+        return ResponseEntity.ok("Subscription added to user successfully");
+    }
+
+//    @PostMapping("/phoneNumber/{phoneNumber}/subscriptions/{subscriptionId}")
+//    public ResponseEntity<String> addSubscriptionsToUserUsingPhoneNumber(@PathVariable String phoneNumber, @PathVariable Long subscriptionId) {
+//        subscriptionService.addSubscriptionToUserUsingPhoneNumber(phoneNumber, subscriptionId);
+//        return ResponseEntity.ok("Subscription added to user with" + " " + phoneNumber + " " + "successfully.");
+//    }
 
     @GetMapping("/subscriptions")
     public ResponseEntity<List<SubscriptionDTO>> getAllSubscriptions() {
