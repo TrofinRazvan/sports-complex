@@ -31,13 +31,17 @@ public class UserController {
     }
 
     @GetMapping("/users/{phoneNumber}")
-    public ResponseEntity<UserDTO> getUserByPhoneNumber(@PathVariable String phoneNumber) {
-        UserDTO userDTO = userService.findByPhoneNumber(phoneNumber);
+    public ResponseEntity<UserDTO> getUserByPhoneNumber(@RequestParam String phoneNumber) {
+        UserDTO userDTO = userService.findUserByPhoneNumber(phoneNumber);
         if (userDTO != null) {
             return ResponseEntity.ok(userDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("/users/count")
+    public long getUserCount() {
+        return userService.getUserCount();
     }
 
     @DeleteMapping("/users/{id}")

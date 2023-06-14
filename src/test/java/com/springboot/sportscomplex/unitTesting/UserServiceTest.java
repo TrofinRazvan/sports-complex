@@ -2,7 +2,7 @@ package com.springboot.sportscomplex.unitTesting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.sportscomplex.models.dto.UserDTO;
-import com.springboot.sportscomplex.models.entities.UserEntity;
+import com.springboot.sportscomplex.models.entities.User;
 import com.springboot.sportscomplex.repositories.UserRepository;
 import com.springboot.sportscomplex.services.user.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -33,15 +33,15 @@ public class UserServiceTest {
                 .email("alex.robert@yahoo.com")
                 .phoneNumber("0756215485")
                 .build();
-        UserEntity userEntity = UserEntity.builder()
+        User user = User.builder()
                 .firstName("Alexandrescu")
                 .lastName("Robert")
                 .email("alex.robert@yahoo.com")
                 .phoneNumber("0756215485")
                 .build();
-        when(objectMapper.convertValue(userDTO, UserEntity.class)).thenReturn(userEntity);
-        when(userRepository.save(userEntity)).thenReturn(userEntity);
-        when(objectMapper.convertValue(userEntity, UserDTO.class)).thenReturn(userDTO);
+        when(objectMapper.convertValue(userDTO, User.class)).thenReturn(user);
+        when(userRepository.save(user)).thenReturn(user);
+        when(objectMapper.convertValue(user, UserDTO.class)).thenReturn(userDTO);
         // When
         UserDTO resultUserDTO = userService.createUser(userDTO);
         // Then
