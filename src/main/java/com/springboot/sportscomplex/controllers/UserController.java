@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{phoneNumber}")
-    public ResponseEntity<UserDTO> getUserByPhoneNumber(@RequestParam String phoneNumber) {
+    public ResponseEntity<UserDTO> getUserByPhoneNumber(@PathVariable String phoneNumber) {
         UserDTO userDTO = userService.findUserByPhoneNumber(phoneNumber);
         if (userDTO != null) {
             return ResponseEntity.ok(userDTO);
@@ -40,8 +40,9 @@ public class UserController {
         }
     }
     @GetMapping("/users/count")
-    public long getUserCount() {
-        return userService.getUserCount();
+    public ResponseEntity<String> getUserCount() {
+        String message = userService.getUserCount();
+        return ResponseEntity.ok(message);
     }
 
     @DeleteMapping("/users/{id}")

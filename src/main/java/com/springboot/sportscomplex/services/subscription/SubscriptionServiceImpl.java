@@ -36,15 +36,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Subscription savedSubscription = subscriptionRepository.save(subscription);
         return objectMapper.convertValue(savedSubscription, SubscriptionDTO.class);
     }
-
     @Override
     public void addSubscriptionToUser(Long userId, Long subscriptionId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         Subscription subscription = subscriptionRepository.findById(subscriptionId)
                 .orElseThrow(() -> new SubscriptionNotFoundException("Subscription not found"));
-        user.getSubscriptions().add(subscription);
-        subscription.getUsers().add(user);
+
+        subscription.setUser(user);
         userRepository.save(user);
         subscriptionRepository.save(subscription);
     }
@@ -82,10 +81,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         existingSubscription.setStartDate(subscriptionDTO.getStartDate());
         existingSubscription.setEndDate(subscriptionDTO.getEndDate());
         existingSubscription.setSubscriptionType(subscriptionDTO.getSubscriptionType());
-//        existingSubscription.setPriceGymSubscription(subscriptionDTO.getPriceGymSubscription());
-//        existingSubscription.setPriceSwimmingPoolSubscription(subscriptionDTO.getPriceSwimmingPoolSubscription());
-//        existingSubscription.setPriceSaunaSubscription(subscriptionDTO.getPriceSaunaSubscription());
-
         Subscription updatedSubscription = subscriptionRepository.save(existingSubscription);
         return objectMapper.convertValue(updatedSubscription, SubscriptionDTO.class);
     }

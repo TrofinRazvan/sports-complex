@@ -40,11 +40,6 @@ public class User {
     private String emergencyContactName;
     @Column(name = "emergency_contact_phone_number")
     private String emergencyContactPhoneNumber;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "users_subscriptions",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "subscriptions_id")
-    )
+    @OneToMany(mappedBy = "user")
     private List<Subscription> subscriptions;
 }
