@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Error occurred while creating user: " + e.getMessage());
         }
     }
-
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> usersFound = userRepository.findAll();
@@ -53,7 +52,6 @@ public class UserServiceImpl implements UserService {
         usersFound.forEach(userEntity -> usersFoundDTO.add(objectMapper.convertValue(userEntity, UserDTO.class)));
         return usersFoundDTO;
     }
-
     @Override
     public UserDTO findUserByPhoneNumber(String phoneNumber) {
         Optional<User> userEntityOptional = userRepository.findUserByPhoneNumber(phoneNumber);
@@ -65,8 +63,10 @@ public class UserServiceImpl implements UserService {
         log.info("No user found with the phone number: " + phoneNumber);
         return null;
     }
-    public long getUserCount() {
-        return userRepository.count();
+    public String getUserCount() {
+        long count =userRepository.count();
+        String message = "The total number of users is: " + count;
+        return message;
     }
 
     @Override
