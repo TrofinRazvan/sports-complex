@@ -36,4 +36,4 @@ To get started with the Sports Complex project, follow these steps:
 
 # Contributing 
 
-Contributions are welcome! If you want to contribute to the project, please follow the standard GitHub workflow and submit a pull request.
+Contributions are welcome! I'm always open to feedback and collaboration. If you have any suggestions, improvements, or ideas, please feel free to open an issue or submit a pull request. If you want to contribute to the project, please follow the standard GitHub workflow and submit a pull request.
